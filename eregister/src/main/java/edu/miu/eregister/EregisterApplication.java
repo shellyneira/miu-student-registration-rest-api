@@ -1,4 +1,4 @@
-package miu.edu.eregister;
+package edu.miu.eregister;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
