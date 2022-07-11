@@ -42,6 +42,8 @@ public class StudentRestController {
     @DeleteMapping("/delete/{studentId}")
     public ResponseEntity<Void> deleteStudent(@PathVariable Integer studentId) {
         boolean isDeleted = studentService.delete(studentId);
-        return new ResponseEntity<>(isDeleted ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+        if(isDeleted)
+            return ResponseEntity.noContent().build();
+        return ResponseEntity.notFound().build();
     }
 }
