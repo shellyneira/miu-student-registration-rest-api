@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Service
 public class StudentServiceImpl implements StudentService {
+
     private StudentRepository studentRepository;
 
     public StudentServiceImpl(StudentRepository studentRepository) {
@@ -18,41 +19,43 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student addNewStudent(StudentRequest studentRequest) {
-        Student newStudent = new Student(null, studentRequest.getStudentNumber(),
-                studentRequest.getFirstName(), studentRequest.getMiddleName(),
-                studentRequest.getLastName(), studentRequest.getCgpa(),
-                studentRequest.isInternational());
+    public Student add(StudentRequest studentRequest) {
+        Student newStudent = buildStudent(studentRequest);
         studentRepository.save(newStudent);
         return newStudent;
     }
 
     @Override
-    public List<Student> getAllStudents() {
+    public List<Student> getAll() {
         return studentRepository.findAll(Sort.by("firstName"));
     }
 
     @Override
-    public Optional<Student> getStudentById(Integer studentId) {
+    public Optional<Student> get(Integer studentId) {
         return studentRepository.findById(studentId);
     }
 
     @Override
-    public Student updateStudent(StudentRequest studentRequest) {
-        Student newStudent = new Student(null, studentRequest.getStudentNumber(),
-                studentRequest.getFirstName(), studentRequest.getMiddleName(),
-                studentRequest.getLastName(), studentRequest.getCgpa(),
-                studentRequest.isInternational());
+    public Student update(StudentRequest studentRequest) {
+        Student newStudent = buildStudent(studentRequest);
         studentRepository.save(newStudent);
         return newStudent;
     }
 
     @Override
-    public boolean deleteStudentById(Integer studentId) {
+    public boolean delete(Integer studentId) {
         if(studentRepository.findById(studentId).isPresent()){
             studentRepository.deleteById(studentId);
             return true;
         }
         return false;
     }
+
+    private final Student buildStudent(StudentRequest studentRequest) {
+        return Student.build(null, studentRequest.getStudentNumber(),
+                studentRequest.getFirstName(), studentRequest.getMiddleName(),
+                studentRequest.getLastName(), studentRequest.getCgpa(),
+                studentRequest.isInternational());
+    }
+
 }
